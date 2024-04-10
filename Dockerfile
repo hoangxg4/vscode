@@ -1,24 +1,50 @@
-# Sử dụng một base image của Ubuntu hoặc Debian
+# Sử dụng image base là Ubuntu
 FROM ubuntu:latest
 
-# Cài đặt các dependencies cần thiết
-RUN apt-get update \
-    && apt-get install -y \
-        wget \
-        apt-transport-https \
-        gpg \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Cập nhật các gói và cài đặt các phần mềm cần thiết
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    curl \
+    wget \
+    git \
+    gcc \
+    make \
+    build-essential \
+    apt-transport-https \
+    ca-certificates \
+    libsecret-1-dev \
+    libx11-dev \
+    libxkbfile-dev \
+    libsqlite3-dev \
+    libudev-dev \
+    libgtk2.0-dev \
+    libgtk-3-dev \
+    libnotify-dev \
+    libgconf2-dev \
+    libgnome-keyring-dev \
+    libsecret-1-dev \
+    libxss1 \
+    libnss3 \
+    libatk1.0-dev \
+    libatk-bridge2.0-dev \
+    libcups2-dev \
+    libdrm-dev \
+    libgbm-dev \
+    libxkbcommon-dev \
+    libxcomposite-dev \
+    libxdamage-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxtst-dev \
+    libxrandr-dev
 
-# Thêm repository của VSCode và cài đặt VSCode
-RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
-    && mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg \
-    && echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list \
-    && apt-get update \
-    && apt-get install -y \
-        code \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Thêm repository của VSCode và cài đặt
+RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+RUN apt-get update && apt-get install -y code
 
-# Khởi động VSCode với tham số --no-sandbox và --user-data-dir
-CMD ["code", "--no-sandbox", "--user-data-dir=/home/user/vscode_data"]
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Chạy VSCode khi khởi động container
+CMD ["code", "--no-sandbox"]
