@@ -1,4 +1,4 @@
-# Sử dụng một base image với hệ điều hành Ubuntu hoặc Debian
+# Sử dụng một base image của Ubuntu hoặc Debian
 FROM ubuntu:latest
 
 # Cài đặt các dependencies cần thiết
@@ -20,5 +20,5 @@ RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor 
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Khởi động VSCode
-CMD ["code"]
+# Khởi động VSCode với tham số --no-sandbox và --user-data-dir
+CMD ["code", "--no-sandbox", "--user-data-dir=/home/user/vscode_data"]
