@@ -46,4 +46,4 @@ RUN apt-get update && apt-get install -y code
 WORKDIR /app
 
 # Chạy VSCode khi khởi động container
-CMD ["code", "--no-sandbox"]
+CMD ["code", "--no-sandbox", "--user-data-dir=/app/.vscode"]
