@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-dev \
     libnotify-dev \
     libgconf2-dev \
-    libgnome-keyring-dev \
     libsecret-1-dev \
     libxss1 \
     libnss3 \
