@@ -15,9 +15,12 @@ RUN apt-get update && apt-get install -y \
 # Install code-server
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
+# Create the code-server configuration directory
+RUN mkdir -p /root/.config/code-server
+
 # Set the password for code-server
 ENV PASSWORD="11042006"
-RUN sed -i -e "s/^# password:/password: $PASSWORD/" /root/.config/code-server/config.yaml
+RUN echo "password: $PASSWORD" >> /root/.config/code-server/config.yaml
 
 # Expose the default code-server port
 EXPOSE 8080
