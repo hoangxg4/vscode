@@ -18,12 +18,12 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 # Create the code-server configuration directory
 RUN mkdir -p /root/.config/code-server
 
-# Set the password for code-server
-ENV PASSWORD="11042006"
-RUN echo "password: $PASSWORD" >> /root/.config/code-server/config.yaml
+# Disable password authentication for code-server
+RUN echo "bind-addr: 0.0.0.0:8080" > /root/.config/code-server/config.yaml && \
+    echo "auth: none" >> /root/.config/code-server/config.yaml
 
 # Expose the default code-server port
 EXPOSE 8080
 
 # Start code-server
-CMD ["code-server", "--bind-addr", "0.0.0.0:8080"]
+CMD ["code-server", "--config", "/root/.config/code-server/config.yaml"]
