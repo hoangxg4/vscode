@@ -1,15 +1,9 @@
-# Sử dụng ảnh base Ubuntu 20.04
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-# Cài đặt các gói cần thiết
-RUN apt-get update && \
-    apt-get install -y \
-    sudo \
-    snapd && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y curl
 
-# Cài đặt Visual Studio Code bằng Snap
-RUN snap install --classic code
+# install VS Code (code-server)
+RUN curl -fsSL https://code-server.dev/install.sh | sh
 
-# Khởi chạy Visual Studio Code
+# Khởi chạy VS Code khi container được bắt đầu
 CMD ["code"]
