@@ -1,5 +1,5 @@
 # Use a base image with the necessary dependencies
-FROM debian:bullseye
+FROM ubuntu:22.04
 
 # Update package lists and install required packages
 RUN apt-get update && apt-get install -y \
