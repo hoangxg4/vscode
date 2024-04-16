@@ -1,16 +1,15 @@
-# Sử dụng hình ảnh gốc với các phụ thuộc cần thiết
-FROM centos:7
+# Sử dụng hình ảnh gốc Debian Buster
+FROM debian:buster
 
-# Cập nhật danh sách gói
-RUN yum update -y && \
-    yum install -y \
+# Cập nhật danh sách gói và cài đặt các gói cần thiết
+RUN apt-get update && \
+    apt-get install -y \
     curl \
     git \
     gcc \
-    gcc-c++ \
+    g++ \
     make \
     python3 \
-    epel-release \
     python3-pip \
     nodejs \
     npm
