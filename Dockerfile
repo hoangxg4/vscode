@@ -1,29 +1,31 @@
-# Use a base image with the necessary dependencies
-FROM ubuntu:22.04
+# Sử dụng hình ảnh gốc với các phụ thuộc cần thiết
+FROM centos:8
 
-# Update package lists and install required packages
-RUN apt-get update && apt-get install -y \
+# Cập nhật danh sách gói và cài đặt các gói cần thiết
+RUN yum update -y && yum install -y \
     curl \
     git \
-    build-essential \
-    software-properties-common \
+    gcc \
+    gcc-c++ \
+    make \
+    epel-release \
     python3 \
     python3-pip \
     nodejs \
     npm
 
-# Install code-server
+# Cài đặt code-server
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
-# Create the code-server configuration directory
+# Tạo thư mục cấu hình của code-server
 RUN mkdir -p /root/.config/code-server
 
-# Disable password authentication for code-server
+# Vô hiệu hóa xác thực mật khẩu cho code-server
 RUN echo "bind-addr: 0.0.0.0:8080" > /root/.config/code-server/config.yaml && \
     echo "auth: none" >> /root/.config/code-server/config.yaml
 
-# Expose the default code-server port
+# Tiếp tục cổng mặc định của code-server
 EXPOSE 8080
 
-# Start code-server
+# Khởi động code-server
 CMD ["code-server", "--config", "/root/.config/code-server/config.yaml"]
