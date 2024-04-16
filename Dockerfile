@@ -1,14 +1,16 @@
 # Sử dụng hình ảnh gốc với các phụ thuộc cần thiết
-FROM centos:8
+FROM centos:7
 
-# Cài đặt các gói cần thiết mà không cập nhật metadata
-RUN yum install -y \
+# Cập nhật danh sách gói
+RUN yum update -y && \
+    yum install -y \
     curl \
     git \
     gcc \
     gcc-c++ \
     make \
     python3 \
+    epel-release \
     python3-pip \
     nodejs \
     npm
