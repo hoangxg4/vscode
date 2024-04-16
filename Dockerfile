@@ -1,8 +1,8 @@
 # Sử dụng hình ảnh gốc với các phụ thuộc cần thiết
 FROM centos:8
 
-# Cập nhật danh sách gói và cài đặt các gói cần thiết
-RUN yum update -y && yum install -y \
+# Cài đặt các gói cần thiết mà không cập nhật metadata
+RUN yum install -y \
     curl \
     git \
     gcc \
