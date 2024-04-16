@@ -1,6 +1,9 @@
 # Sử dụng hình ảnh gốc với các phụ thuộc cần thiết
 FROM centos:8
 
+# Cài đặt EPEL repository
+RUN yum -y install epel-release
+
 # Cập nhật danh sách gói và cài đặt các gói cần thiết
 RUN yum update -y && yum install -y \
     curl \
@@ -8,7 +11,6 @@ RUN yum update -y && yum install -y \
     gcc \
     gcc-c++ \
     make \
-    epel-release \
     python3 \
     python3-pip \
     nodejs \
