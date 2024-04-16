@@ -3,7 +3,15 @@ FROM centos:8
 
 # Cập nhật danh sách gói và cài đặt các gói cần thiết
 RUN yum update -y && yum install -y \
-    curl
+    curl \
+    git \
+    gcc \
+    gcc-c++ \
+    make \
+    python3 \
+    python3-pip \
+    nodejs \
+    npm
 
 # Cài đặt code-server
 RUN curl -fsSL https://code-server.dev/install.sh | sh
