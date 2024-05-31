@@ -16,7 +16,7 @@ RUN sudo apt-get update && sudo apt-get install -y \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # Tùy chỉnh cài đặt CodeServer (nếu cần)
-COPY ./settings.json /home/coder/.local/share/code-server/User/settings.json
+# COPY ./settings.json /home/coder/.local/share/code-server/User/settings.json
 
 # Mở cổng 8080
 EXPOSE 8080
