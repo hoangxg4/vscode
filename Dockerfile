@@ -1,29 +1,28 @@
-# Use a base image with the necessary dependencies
-FROM ubuntu:22.04
+# Sử dụng hình ảnh chính thức của CodeServer
+FROM codercom/code-server:latest
 
-# Update package lists and install required packages
-RUN apt-get update && apt-get install -y \
-    curl \
+# Đặt biến môi trường cho CodeServer
+ENV PASSWORD=11042006
+ENV SUDO_PASSWORD=11042006
+
+# Chọn thư mục làm việc
+WORKDIR /home/coder/project
+
+# Cài đặt các gói cần thiết (nếu cần)
+RUN sudo apt-get update && sudo apt-get install -y \
     git \
-    build-essential \
-    software-properties-common \
-    python3 \
-    python3-pip \
-    nodejs \
-    npm
+    curl \
+    && sudo apt-get clean \
+    && sudo rm -rf /var/lib/apt/lists/*
 
-# Install code-server
-RUN curl -fsSL https://code-server.dev/install.sh | sh
+# Tùy chỉnh cài đặt CodeServer (nếu cần)
+COPY ./settings.json /home/coder/.local/share/code-server/User/settings.json
 
-# Create the code-server configuration directory
-RUN mkdir -p /root/.config/code-server
-
-# Disable password authentication for code-server
-RUN echo "bind-addr: 0.0.0.0:8080" > /root/.config/code-server/config.yaml && \
-    echo "auth: none" >> /root/.config/code-server/config.yaml
-
-# Expose the default code-server port
+# Mở cổng 8080
 EXPOSE 8080
 
-# Start code-server
-CMD ["code-server", "--config", "/root/.config/code-server/config.yaml"]
+# Khởi động CodeServer
+CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "."]
+
+# Nếu cần thêm quyền sudo, bỏ comment dòng dưới
+USER root
