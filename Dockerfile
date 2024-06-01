@@ -1,28 +1,34 @@
-# Sử dụng hình ảnh chính thức của CodeServer
-FROM codercom/code-server:latest
+# Sử dụng base image chính thức của Jupyter với JupyterLab
+FROM jupyter/base-notebook:latest
 
-# Đặt biến môi trường cho CodeServer
-ENV PASSWORD=11042006
-ENV SUDO_PASSWORD=11042006
+# Tạo một người dùng mới không phải root
+ARG NB_USER=jovyan
+ARG NB_UID=1000
+ARG NB_GID=100
 
-# Chọn thư mục làm việc
-WORKDIR /home/coder/project
+USER root
 
-# Cài đặt các gói cần thiết (nếu cần)
-RUN sudo apt-get update && sudo apt-get install -y \
-    git \
-    curl \
-    && sudo apt-get clean \
-    && sudo rm -rf /var/lib/apt/lists/*
+# Cài đặt sudo để có thể sử dụng su
+RUN apt-get update && \
+    apt-get install -y sudo && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Tùy chỉnh cài đặt CodeServer (nếu cần)
-# COPY ./settings.json /home/coder/.local/share/code-server/User/settings.json
+# Tạo người dùng không phải root và thêm vào sudo group
+RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
+    echo "$NB_USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$NB_USER && \
+    chmod 0440 /etc/sudoers.d/$NB_USER
 
-# Mở cổng 8080
-EXPOSE 8080
+# Đặt người dùng mới là người dùng mặc định khi chạy container
+USER $NB_USER
 
-# Khởi động CodeServer
-CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "."]
+# Thiết lập thư mục làm việc
+WORKDIR /home/$NB_USER
 
-# Nếu cần thêm quyền sudo, bỏ comment dòng dưới
-# USER root
+# Cài đặt JupyterLab
+RUN pip install jupyterlab
+
+# Expose port để truy cập JupyterLab
+EXPOSE 8888
+
+# Chạy JupyterLab
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
