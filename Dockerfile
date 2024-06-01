@@ -25,4 +25,4 @@ EXPOSE 8080
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "."]
 
 # Nếu cần thêm quyền sudo, bỏ comment dòng dưới
-USER root
+# USER root
