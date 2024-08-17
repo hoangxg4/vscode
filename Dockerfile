@@ -6,7 +6,7 @@ ENV PASSWORD=11042006
 ENV SUDO_PASSWORD=11042006
 
 # Chọn thư mục làm việc
-WORKDIR /home/coder/project
+WORKDIR /root
 
 # Cài đặt các gói cần thiết (nếu cần)
 RUN sudo apt-get update && sudo apt-get install -y \
